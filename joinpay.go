@@ -26,6 +26,9 @@ func New(MerchantNo string , Apikey string, isProd bool) (client *joinClient) {
 	return client
 }
 
+/**
+汇聚统一下单
+ */
 func (this *joinClient) UniPayApi(body BodyMap) (joinRsp *UniPayApiResponse, err error) {
 	var bytes []byte
 	if !this.isProd {
@@ -41,6 +44,28 @@ func (this *joinClient) UniPayApi(body BodyMap) (joinRsp *UniPayApiResponse, err
 	}
 
 	joinRsp = new(UniPayApiResponse)
+	err = xml.Unmarshal(bytes, joinRsp)
+	if err != nil {
+		return nil, err
+	}
+	return joinRsp, nil
+}
+
+/**
+汇聚退款
+ */
+func (this *joinClient) Refund(body BodyMap) (joinRsp *RefundResponse , err error){
+	var bytes []byte
+
+	tlsConfig := new(tls.Config)
+	tlsConfig.InsecureSkipVerify = true
+
+	bytes, err = this.doJoin(body, joinURL_Refund, tlsConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	joinRsp = new(RefundResponse)
 	err = xml.Unmarshal(bytes, joinRsp)
 	if err != nil {
 		return nil, err

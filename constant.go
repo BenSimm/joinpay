@@ -9,7 +9,8 @@ const (
 	wx_base_url        = "https://www.joinpay.com/"
 
 	//正式
-	joinURL_UniPayApi  = wx_base_url + "trade/uniPayApi.action"          //请求交易入口
+	joinURL_UniPayApi  	= wx_base_url + "trade/uniPayApi.action"          	//请求交易入口
+	joinURL_Refund 		= wx_base_url + "trade/refund.action"				//退款
 
 	//支付类型
 	TradeType_ALi_Native   		= "ALIPAY_NATIVE"

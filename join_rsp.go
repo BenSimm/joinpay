@@ -23,3 +23,24 @@ type UniPayApiResponse struct {
 	Hmac    			string `json:"hmac"`
 }
 
+
+type RefundResponse struct {
+	R1MerchantNo		string `json:"r1_MerchantNo"`
+	R2OrderNo			string `json:"r2_OrderNo"`
+	R3RefundOrderNo		string `json:"r3_RefundOrderNo"`
+	R4RefundAmount		string `json:"r4_RefundAmount"`
+	RaStatus			string `json:"ra_Status"`
+	RbCode				string `json:"rb_Code"`
+	RcCodeMsg			string `json:"rc_CodeMsg"`
+	Hmac				string `json:"hmac"`
+}
+
+
+type RefundNotifyResponse struct {
+	R1MerchantNo		string `json:"r1_MerchantNo"`
+	R2OrderNo			string `json:"r2_OrderNo"`
+	R3RefundOrderNo		string `json:"r3_RefundOrderNo"`
+	R4RefundAmountStr	string `json:"r4_RefundAmount_str"`
+	RaStatus			string `json:"ra_Status"`
+	Hmac				string `json:"hmac"`
+}
