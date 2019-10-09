@@ -43,7 +43,7 @@ func (this *joinClient) UniPayApi(body BodyMap) (joinRsp *UniPayApiResponse, err
 	}
 
 	joinRsp = new(UniPayApiResponse)
-	err = xml.Unmarshal(bytes, joinRsp)
+	err = json.Unmarshal(bytes, joinRsp)
 	if err != nil {
 		return nil, err
 	}
