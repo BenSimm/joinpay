@@ -1,11 +1,22 @@
 package joinpay
 
 import (
+	"crypto/hmac"
+	"crypto/md5"
+	"crypto/sha256"
 	"crypto/tls"
+	"encoding/hex"
 	"encoding/json"
 	"encoding/xml"
 	"github.com/parnurzeal/gorequest"
+	"net/http"
+	"strings"
 )
+
+var (
+	kSuccess = []byte("success")
+)
+
 
 type joinClient struct {
 	MerchantNo 	string
@@ -105,3 +116,68 @@ func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Confi
 	return bytes, nil
 }
 
+//支付通知的签名验证和参数签名后的Sign
+//    apiKey：API秘钥值
+//    signType：签名类型 MD5 或 HMAC-SHA256（默认请填写 MD5）
+//    notifyRsp：利用 gopay.ParseNotifyResult() 得到的结构体
+//    返回参数ok：是否验证通过
+//    返回参数sign：根据参数计算的sign值，非微信返回参数中的Sign
+func VerifyPayResultSign(apiKey string, signType string, notifyRsp *JoinNotifyRequest) (ok bool, sign string) {
+
+	body := make(BodyMap)
+	body.Set("r1_MerchantNo", notifyRsp.R1MerchantNo)
+	body.Set("r2_OrderNo", notifyRsp.R2OrderNo)
+	body.Set("r3_Amount", notifyRsp.R3Amount)
+	body.Set("r4_Cur", notifyRsp.R4Cur)
+	body.Set("r5_Mp", notifyRsp.R5Mp)
+	body.Set("r6_Status", notifyRsp.R6Status)
+	body.Set("r7_TrxNo", notifyRsp.R7TrxNo)
+	body.Set("r8_BankOrderNo", notifyRsp.R8BankOrderNo)
+	body.Set("r9_BankTrxNo", notifyRsp.R9BankTrxNo)
+	body.Set("ra_PayTime", notifyRsp.RaPayTime)
+	body.Set("rb_DealTime", notifyRsp.RbDealTime)
+	body.Set("rc_BankCode", notifyRsp.RcBankCode)
+
+	newBody := make(BodyMap)
+	for k, v := range body {
+		vStr := convert2String(v)
+		if vStr != "" && vStr != "0" {
+			newBody.Set(k, v)
+		}
+	}
+
+	signStr := SortJoinSignParams(apiKey, newBody)
+	var hashSign []byte
+	if signType == SignType_MD5 {
+		hash := md5.New()
+		hash.Write([]byte(signStr))
+		hashSign = hash.Sum(nil)
+	} else {
+		hash := hmac.New(sha256.New, []byte(apiKey))
+		hash.Write([]byte(signStr))
+		hashSign = hash.Sum(nil)
+	}
+	sign = strings.ToLower(hex.EncodeToString(hashSign))
+	ok = sign == notifyRsp.Hmac
+	return
+}
+
+//解析微信支付异步通知的参数
+//    req：*http.Request
+//    返回参数notifyReq：Notify请求的参数
+//    返回参数err：错误信息
+func ParseJoinNotifyResult(req *http.Request) (notifyReq *JoinNotifyRequest, err error) {
+	notifyReq = new(JoinNotifyRequest)
+	defer req.Body.Close()
+	err = xml.NewDecoder(req.Body).Decode(notifyReq)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+
+func AckNotification(w http.ResponseWriter) {
+	w.WriteHeader(http.StatusOK)
+	w.Write(kSuccess)
+}
