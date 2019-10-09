@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"encoding/xml"
-	"fmt"
 	"github.com/parnurzeal/gorequest"
 )
 
@@ -95,10 +94,10 @@ func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Confi
 
 	agent.Post(url)
 	agent.Type("form")
-	fmt.Printf(bodyString)
+	//fmt.Printf(bodyString)
 	agent.SendString(bodyString)
 	_, bytes, errs := agent.EndBytes()
-	fmt.Println(string(bytes))
+	//fmt.Println(string(bytes))
 	if len(errs) > 0 {
 		return nil, errs[0]
 	}
