@@ -115,7 +115,7 @@ func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Confi
 	if len(errs) > 0 {
 		return nil, errs[0]
 	}
-	fmt.Println(string(bytes))
+	fmt.Println(string(bytes) + "123123123213")
 
 	return bytes, nil
 }
