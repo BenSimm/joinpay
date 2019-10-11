@@ -94,7 +94,7 @@ func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Confi
 	//正式环境
 	//本地计算Sign
 	sign = getLocalSign(this.ApiKey, body.Get("sign_type"), body)
-
+	fmt.Println("sign:" + sign)
 	body.Set("hmac", sign)
 	body.Remove("sign_type")
 	//===============发起请求===================

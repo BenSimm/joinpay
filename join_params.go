@@ -6,6 +6,7 @@ import (
 	"crypto/md5"
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"sort"
 	"strings"
 )
@@ -24,6 +25,7 @@ func getLocalSign(apiKey string, signType string, body BodyMap) (sign string) {
 		hash.Write([]byte(signStr))
 		hashSign = hash.Sum(nil)
 	}
+	fmt.Println("signStr:" + signStr)
 	sign = strings.ToLower(hex.EncodeToString(hashSign))
 	return
 }
