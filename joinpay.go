@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"github.com/parnurzeal/gorequest"
+	"golang_payment/pkg/logging"
 	"net/http"
 	"strings"
 )
@@ -168,8 +169,22 @@ func VerifyPayResultSign(apiKey string, signType string, notifyRsp *JoinNotifyRe
 //    返回参数err：错误信息
 func ParseJoinNotifyResult(req *http.Request) (notifyReq *JoinNotifyRequest, err error) {
 	notifyReq = new(JoinNotifyRequest)
-	defer req.Body.Close()
-	err = json.NewDecoder(req.Body).Decode(notifyReq)
+	err = req.ParseForm()
+	logging.Info("初始化了ParseForm")
+	notifyReq.R1MerchantNo = req.Form.Get("r1_MerchantNo")
+	notifyReq.R2OrderNo = req.Form.Get("r2_OrderNo")
+	notifyReq.R3Amount = req.Form.Get("r3_Amount")
+	notifyReq.R4Cur = req.Form.Get("r4_Cur")
+	notifyReq.R5Mp = req.Form.Get("r5_Mp")
+	notifyReq.R6Status = req.Form.Get("r6_Status")
+	notifyReq.R7TrxNo = req.Form.Get("r7_TrxNo")
+	notifyReq.R8BankOrderNo = req.Form.Get("r8_BankOrderNo")
+	notifyReq.R9BankTrxNo = req.Form.Get("r9_BankTrxNo")
+	notifyReq.RaPayTime = req.Form.Get("ra_PayTime")
+	notifyReq.RbDealTime = req.Form.Get("rb_DealTime")
+	notifyReq.RcBankCode = req.Form.Get("rc_BankCode")
+	notifyReq.Hmac = req.Form.Get("hmac")
+
 	if err != nil {
 		return nil, err
 	}
