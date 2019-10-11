@@ -109,13 +109,13 @@ func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Confi
 
 	agent.Post(url)
 	agent.Type("form-data")
-	fmt.Printf(bodyString)
 	agent.SendString(bodyString)
 	_, bytes, errs := agent.EndBytes()
 	//fmt.Println(string(bytes))
 	if len(errs) > 0 {
 		return nil, errs[0]
 	}
+	fmt.Println(string(bytes))
 
 	return bytes, nil
 }
