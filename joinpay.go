@@ -139,15 +139,16 @@ func VerifyPayResultSign(apiKey string, signType string, notifyRsp *JoinNotifyRe
 	body.Set("rb_DealTime", notifyRsp.RbDealTime)
 	body.Set("rc_BankCode", notifyRsp.RcBankCode)
 
-	newBody := make(BodyMap)
-	for k, v := range body {
-		vStr := convert2String(v)
-		if vStr != "" && vStr != "0" {
-			newBody.Set(k, v)
-		}
-	}
+	//newBody := make(BodyMap)
+	//for k, v := range body {
+	//	vStr := convert2String(v)
+	//	if vStr != "" && vStr != "0" {
+	//		newBody.Set(k, v)
+	//	}
+	//}
 
-	signStr := SortJoinSignParams(apiKey, newBody)
+	signStr := SortJoinSignParams(apiKey, body)
+	logging.Info(signStr)
 	var hashSign []byte
 	if signType == SignType_MD5 {
 		hash := md5.New()
