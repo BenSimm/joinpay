@@ -107,7 +107,7 @@ func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Confi
 	bodyString := string(bodyM)
 
 	agent.Post(url)
-	agent.Type("form")
+	agent.Type("json")
 	fmt.Printf(bodyString)
 	agent.SendString(bodyString)
 	_, bytes, errs := agent.EndBytes()
