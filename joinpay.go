@@ -169,7 +169,7 @@ func VerifyPayResultSign(apiKey string, signType string, notifyRsp *JoinNotifyRe
 func ParseJoinNotifyResult(req *http.Request) (notifyReq *JoinNotifyRequest, err error) {
 	notifyReq = new(JoinNotifyRequest)
 	defer req.Body.Close()
-	err = xml.NewDecoder(req.Body).Decode(notifyReq)
+	err = json.NewDecoder(req.Body).Decode(notifyReq)
 	if err != nil {
 		return nil, err
 	}
