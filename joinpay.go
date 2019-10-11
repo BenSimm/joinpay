@@ -11,6 +11,7 @@ import (
 	"github.com/parnurzeal/gorequest"
 	"golang_payment/pkg/logging"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -171,6 +172,11 @@ func VerifyPayResultSign(apiKey string, signType string, notifyRsp *JoinNotifyRe
 func ParseJoinNotifyResult(req *http.Request) (notifyReq *JoinNotifyRequest, err error) {
 	notifyReq = new(JoinNotifyRequest)
 	err = req.ParseForm()
+	v := url.Values{}
+	v.Add("ra_PayTime" , req.Form.Get("ra_PayTime"))
+	v.Add("rb_DealTime" , req.Form.Get("rb_DealTime"))
+	body := v.Encode()
+	m,_ :=url.ParseQuery(body)
 	logging.Info("初始化了ParseForm")
 	notifyReq.R1MerchantNo = req.Form.Get("r1_MerchantNo")
 	notifyReq.R2OrderNo = req.Form.Get("r2_OrderNo")
@@ -181,8 +187,8 @@ func ParseJoinNotifyResult(req *http.Request) (notifyReq *JoinNotifyRequest, err
 	notifyReq.R7TrxNo = req.Form.Get("r7_TrxNo")
 	notifyReq.R8BankOrderNo = req.Form.Get("r8_BankOrderNo")
 	notifyReq.R9BankTrxNo = req.Form.Get("r9_BankTrxNo")
-	notifyReq.RaPayTime = req.Form.Get("ra_PayTime")
-	notifyReq.RbDealTime = req.Form.Get("rb_DealTime")
+	notifyReq.RaPayTime = m.Get("ra_PayTime")
+	notifyReq.RbDealTime = m.Get("rb_DealTime")
 	notifyReq.RcBankCode = req.Form.Get("rc_BankCode")
 	notifyReq.Hmac = req.Form.Get("hmac")
 
