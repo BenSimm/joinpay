@@ -172,12 +172,6 @@ func VerifyPayResultSign(apiKey string, signType string, notifyRsp *JoinNotifyRe
 func ParseJoinNotifyResult(req *http.Request) (notifyReq *JoinNotifyRequest, err error) {
 	notifyReq = new(JoinNotifyRequest)
 	err = req.ParseForm()
-	v := url.Values{}
-	v.Add("ra_PayTime" , req.Form.Get("ra_PayTime"))
-	v.Add("rb_DealTime" , req.Form.Get("rb_DealTime"))
-	body := v.Encode()
-	m,_ :=url.ParseQuery(body)
-
 	notifyReq.R1MerchantNo = req.Form.Get("r1_MerchantNo")
 	notifyReq.R2OrderNo = req.Form.Get("r2_OrderNo")
 	notifyReq.R3Amount = req.Form.Get("r3_Amount")
@@ -187,11 +181,11 @@ func ParseJoinNotifyResult(req *http.Request) (notifyReq *JoinNotifyRequest, err
 	notifyReq.R7TrxNo = req.Form.Get("r7_TrxNo")
 	notifyReq.R8BankOrderNo = req.Form.Get("r8_BankOrderNo")
 	notifyReq.R9BankTrxNo = req.Form.Get("r9_BankTrxNo")
-	notifyReq.RaPayTime = m.Get("ra_PayTime")
-	notifyReq.RbDealTime = m.Get("rb_DealTime")
+	notifyReq.RaPayTime,_ = url.QueryUnescape(req.Form.Get("ra_PayTime"))
+	notifyReq.RbDealTime,_ = url.QueryUnescape(req.Form.Get("rb_DealTime"))
 	notifyReq.RcBankCode = req.Form.Get("rc_BankCode")
 	notifyReq.Hmac = req.Form.Get("hmac")
-	logging.Info(m.Get("ra_PayTime")+ m.Get("rb_DealTime"))
+	//logging.Info(m.Get("ra_PayTime")+ m.Get("rb_DealTime"))
 	if err != nil {
 		return nil, err
 	}
