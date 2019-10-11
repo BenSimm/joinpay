@@ -89,13 +89,13 @@ func (this *joinClient) Refund(body BodyMap) (joinRsp *RefundResponse , err erro
 //向微信发送请求 ok
 func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Config) (bytes []byte, err error) {
 	var sign string
-	var signType = body.Get("sign_type")
-	body.Remove("sign_type")
+	//var signType = body.Get("sign_type")
+	//body.Remove("sign_type")
 	body.Set("p1_MerchantNo", this.MerchantNo)
 	//===============生成参数===================
 	//正式环境
 	//本地计算Sign
-	sign = getLocalSign(this.ApiKey, signType, body)
+	sign = getLocalSign(this.ApiKey, body.Get("sign_type"), body)
 	fmt.Println("sign:" + sign)
 	body.Set("hmac", sign)
 
