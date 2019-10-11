@@ -177,7 +177,7 @@ func ParseJoinNotifyResult(req *http.Request) (notifyReq *JoinNotifyRequest, err
 	v.Add("rb_DealTime" , req.Form.Get("rb_DealTime"))
 	body := v.Encode()
 	m,_ :=url.ParseQuery(body)
-	logging.Info("初始化了ParseForm")
+
 	notifyReq.R1MerchantNo = req.Form.Get("r1_MerchantNo")
 	notifyReq.R2OrderNo = req.Form.Get("r2_OrderNo")
 	notifyReq.R3Amount = req.Form.Get("r3_Amount")
@@ -191,7 +191,7 @@ func ParseJoinNotifyResult(req *http.Request) (notifyReq *JoinNotifyRequest, err
 	notifyReq.RbDealTime = m.Get("rb_DealTime")
 	notifyReq.RcBankCode = req.Form.Get("rc_BankCode")
 	notifyReq.Hmac = req.Form.Get("hmac")
-
+	logging.Info(m.Get("ra_PayTime")+ m.Get("rb_DealTime"))
 	if err != nil {
 		return nil, err
 	}
