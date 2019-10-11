@@ -96,6 +96,7 @@ func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Confi
 	sign = getLocalSign(this.ApiKey, body.Get("sign_type"), body)
 
 	body.Set("hmac", sign)
+	body.Remove("sign_type")
 	//===============发起请求===================
 	agent := gorequest.New()
 
@@ -107,7 +108,7 @@ func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Confi
 	bodyString := string(bodyM)
 
 	agent.Post(url)
-	agent.Type("json")
+	agent.Type("form")
 	fmt.Printf(bodyString)
 	agent.SendString(bodyString)
 	_, bytes, errs := agent.EndBytes()
