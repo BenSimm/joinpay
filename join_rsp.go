@@ -46,7 +46,7 @@ type RefundResponse struct {
 	R3RefundOrderNo		string `json:"r3_RefundOrderNo"`
 	R4RefundAmount		string `json:"r4_RefundAmount"`
 	RaStatus			string `json:"ra_Status"`
-	RbCode				string `json:"rb_Code"`
+	RbCode				int64 `json:"rb_Code"`
 	RcCodeMsg			string `json:"rc_CodeMsg"`
 	Hmac				string `json:"hmac"`
 }
