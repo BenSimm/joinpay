@@ -6,7 +6,6 @@ import (
 	"crypto/md5"
 	"crypto/sha256"
 	"encoding/hex"
-	"fmt"
 	"sort"
 	"strings"
 )
