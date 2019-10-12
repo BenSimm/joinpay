@@ -89,8 +89,6 @@ func (this *joinClient) Refund(body BodyMap) (joinRsp *RefundResponse , err erro
 //向微信发送请求 ok
 func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Config) (bytes []byte, err error) {
 	var sign string
-	//var signType = body.Get("sign_type")
-	//body.Remove("sign_type")
 	body.Set("p1_MerchantNo", this.MerchantNo)
 	//===============生成参数===================
 	//正式环境
@@ -113,11 +111,9 @@ func (this *joinClient) doJoin(body BodyMap, url string, tlsConfig ...*tls.Confi
 	agent.Type("form")
 	agent.SendString(bodyString)
 	_, bytes, errs := agent.EndBytes()
-	//fmt.Println(string(bytes))
 	if len(errs) > 0 {
 		return nil, errs[0]
 	}
-	fmt.Println(string(bytes) + "123123123213")
 
 	return bytes, nil
 }

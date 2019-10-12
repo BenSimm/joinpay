@@ -14,7 +14,6 @@ import (
 //本地通过支付参数计算Sign值
 func getLocalSign(apiKey string, signType string, body BodyMap) (sign string) {
 	signStr := SortJoinSignParams(apiKey, body)
-	//fmt.Println("signStr:", signStr)
 	var hashSign []byte
 	if signType == SignType_HMAC_SHA256 {
 		hash := hmac.New(sha256.New, []byte(apiKey))
@@ -25,8 +24,6 @@ func getLocalSign(apiKey string, signType string, body BodyMap) (sign string) {
 		hash.Write([]byte(signStr))
 		hashSign = hash.Sum(nil)
 	}
-	fmt.Println("signStr:" + signStr)
-	fmt.Println("apiKey:" + apiKey)
 	sign = strings.ToLower(hex.EncodeToString(hashSign))
 	return
 }
