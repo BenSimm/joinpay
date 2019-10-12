@@ -80,6 +80,7 @@ func (this *joinClient) Refund(body BodyMap) (joinRsp *RefundResponse , err erro
 	fmt.Print(bytes)
 	joinRsp = new(RefundResponse)
 	err = json.Unmarshal(bytes, joinRsp)
+	fmt.Print(joinRsp)
 	if err != nil {
 		return nil, err
 	}
