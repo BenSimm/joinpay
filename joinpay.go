@@ -76,7 +76,8 @@ func (this *joinClient) Refund(body BodyMap) (joinRsp *RefundResponse , err erro
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println("string: " + string(bytes))
+	fmt.Print(bytes)
 	joinRsp = new(RefundResponse)
 	err = json.Unmarshal(bytes, joinRsp)
 	if err != nil {
