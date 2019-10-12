@@ -26,6 +26,7 @@ func getLocalSign(apiKey string, signType string, body BodyMap) (sign string) {
 		hashSign = hash.Sum(nil)
 	}
 	fmt.Println("signStr:" + signStr)
+	fmt.Println("apiKey:" + apiKey)
 	sign = strings.ToLower(hex.EncodeToString(hashSign))
 	return
 }
