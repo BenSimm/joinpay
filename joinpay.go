@@ -7,7 +7,6 @@ import (
 	"crypto/tls"
 	"encoding/hex"
 	"encoding/json"
-	"encoding/xml"
 	"fmt"
 	"github.com/parnurzeal/gorequest"
 	"golang_payment/pkg/logging"
@@ -79,7 +78,7 @@ func (this *joinClient) Refund(body BodyMap) (joinRsp *RefundResponse , err erro
 	}
 
 	joinRsp = new(RefundResponse)
-	err = xml.Unmarshal(bytes, joinRsp)
+	err = json.Unmarshal(bytes, joinRsp)
 	if err != nil {
 		return nil, err
 	}
